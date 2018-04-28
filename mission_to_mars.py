@@ -8,8 +8,9 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import pymongo
-from splinter import Browser
+# from splinter import Browser
 import pandas as pd
+from selenium import webdriver
 
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
@@ -56,36 +57,36 @@ def scrape():
 # In[7]:
 
 
-    browser = Browser('chrome', headless=False)
+    
 
 
 # In[8]:
 
-
+    browser = webdriver.Chrome()
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-    browser.visit(url)
+    browser.get(url)
     time.sleep(3)
 
 
 # In[9]:
 
 
-    browser.click_link_by_partial_text('FULL IMAGE')
+    browser.find_element_by_link_text('FULL IMAGE').click()
     time.sleep(2)
-    browser.click_link_by_partial_text('more info')
+    browser.find_element_by_link_text('more info').click()
     time.sleep(5)
 
 
 # In[10]:
 
 
-    soup = BeautifulSoup(html.text, 'html.parser')
+    soup = BeautifulSoup(browser.page_source, "html.parser")
 
 
 # In[11]:
 
 
-    featured_image_url = soup.find_all("img", class_="main_image")
+    featured_image_url = "https://www.jpl.nasa.gov" + soup.find("img", class_="main_image")['src']
     featured_image_url
 
 
@@ -141,18 +142,18 @@ def scrape():
 
 
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-    browser.visit(url)
+    browser.get(url)
 
 
 # In[20]:
 
 
-    hemisphere_list = ["Cerberus", "Schiaparelli", "Syrtis", "Valles"]
+    hemisphere_list = ["Cerberus Hemisphere Enhanced", "Schiaparelli Hemisphere Enhanced", "Syrtis Major Hemisphere Enhanced", "Valles Marineris Hemisphere Enhanced"]
     img_url_list = []
     for hemisphere in hemisphere_list:
-        browser.visit(url)
-        browser.click_link_by_partial_text(f"{hemisphere}")
-        html = browser.html
+        browser.get(url)
+        browser.find_element_by_link_text(f"{hemisphere}").click()
+        html = browser.page_source
         soup = BeautifulSoup(html, 'html.parser')
         img_url = soup.find_all("a", text="Sample")[0]['href']
         img_url_list.append(img_url)
@@ -196,7 +197,12 @@ def scrape():
         "Hemisphere Image Urls": hemisphere_image_urls }
 
 
-    mars.mission.insert_one(scraped_data)
+    try:
+        item = mars.mission.find_one()
+        item_id = item.get('_id')
+        mars.mission.update_one({'_id': item_id}, {"$set": scraped_data}, upsert=True)
+    except AttributeError: 
+        mars.mission.insert_one(scraped_data)
     return scraped_data
 
 # In[25]:
@@ -238,6 +244,7 @@ def scraperoute():
 
 @app.route("/")
 def slashroute():
+    scraped_data = scrape()
     results_list = viewTable()
     data_table = pd.DataFrame(data=results_list).to_html()
     return data_table
