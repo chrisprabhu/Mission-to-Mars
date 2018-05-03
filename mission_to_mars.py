@@ -247,14 +247,14 @@ def slashroute():
     scraped_data = scrape()
     results_list = viewTable()
     data_table = pd.DataFrame(data=results_list).to_html()
-    mars_data = pd.DataFrame(data=scraped_data["Mars Data"], index=[0]).to_html()
+    mars_data = pd.DataFrame(data=scraped_data["Mars Data"], index=[0])
     return render_template("index.html", 
     featured_image_url=scraped_data["Featured Image URL"],
     mars_weather=scraped_data["Mars Weather"],
-    data=mars_data,
     hemisphere_image_urls=scraped_data["Hemisphere Image Urls"],
     news_p=scraped_data["News Paragraph"],
-    news_title=scraped_data["News Title"])
+    news_title=scraped_data["News Title"],
+    data=mars_data)
 
 app.run(debug=True)
 

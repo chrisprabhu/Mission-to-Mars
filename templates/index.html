@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <title>Mission to Mars</title>
   </head>
   <body>
@@ -17,8 +17,9 @@
 
     <h1>Mission to Mars</h1>
     <br>
+    <!-- Button disabled until I can make it work: 
     <button type="button" class="btn btn-primary btn-lg">Scrape New Data</button>
-
+    -->
 </center>
     </div>
 
@@ -35,9 +36,9 @@
         <br><br>
         <div class="col-sm-4">
             <br><br>
-            <div> Current Weather On Mars</h4> <br> {{ mars_weather }} </div>
+            <div class="databox"> <h4>Current Weather On Mars</h4> <br> {{ mars_weather }} </div>
             <br><br><br>
-            <div><h4> Mars Facts</h4> <br> {{ data }} </div>
+            <div class="databox"><h4> Mars Facts</h4> <br> {{ data }} </div>
         </div>
       </div>
 
