@@ -12,7 +12,8 @@ import pymongo
 import pandas as pd
 from selenium import webdriver
 
-conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
+# conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
+conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 mars = client.marsDB
 
@@ -62,7 +63,7 @@ def scrape():
 
 # In[8]:
 
-    browser = webdriver.Chrome()
+    browser = webdriver.Chrome("chromedriver")
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.get(url)
     time.sleep(3)
