@@ -256,7 +256,8 @@ def slashroute():
     news_title=scraped_data["News Title"],
     data=mars_data)
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 # In[31]:
