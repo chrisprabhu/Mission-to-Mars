@@ -3,29 +3,38 @@
 
 # In[1]:
 
-
+import os
 from bs4 import BeautifulSoup
 import requests
 import time
 import pymongo
-# from splinter import Browser
+from splinter import Browser
 import pandas as pd
 from selenium import webdriver
 
-conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
-#conn = 'mongodb://localhost:27017'
+# conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
+conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 mars = client.marsDB
 
 # In[27]:
+def init_browser():
+    driver_path = os.environ.get('GOOGLE_CHROME_SHIM', None)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = driver_path
+    chrome_options.add_argument('no-sandbox')
+    chrome_options.add_argument('--headless')
 
+    # old path: '/app/.chromedriver/bin/chromedriver'
+    # executable_path = {'executable_path': driver_path}
+    return Browser('chrome', executable_path="chromedriver", options=chrome_options, headless=True)
 
 
 
 
 # In[2]:
 def scrape():
-
+    browser = init_browser()
 # NASA Mars News
     url = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
 
@@ -63,32 +72,25 @@ def scrape():
 
 # In[8]:
 
-    # driver_path = os.environ.get('GOOGLE_CHROME_SHIM', None)
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.binary_location = driver_path
-    # chrome_options.add_argument('no-sandbox')
-    # chrome_options.add_argument('--headless')
-    # browser = Browser('chrome', executable_path="chromedriver", options=chrome_options, headless=True)
-
-    browser = webdriver.Chrome("/app/.apt/usr/bin/google-chrome")
+    # browser = webdriver.Chrome("chromedriver")
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-    browser.get(url)
+    browser.visit(url)
     time.sleep(3)
 
 
 # In[9]:
 
 
-    browser.find_element_by_link_text('FULL IMAGE').click()
+    browser.find_by_id('full_image')[0].click()
     time.sleep(2)
-    browser.find_element_by_link_text('more info').click()
+    browser.find_link_by_partial_text('more info')[0].click()
     time.sleep(5)
 
 
 # In[10]:
 
 
-    soup = BeautifulSoup(browser.page_source, "html.parser")
+    soup = BeautifulSoup(browser.html, "html.parser")
 
 
 # In[11]:
@@ -150,7 +152,7 @@ def scrape():
 
 
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-    browser.get(url)
+    browser.visit(url)
 
 
 # In[20]:
@@ -159,9 +161,9 @@ def scrape():
     hemisphere_list = ["Cerberus Hemisphere Enhanced", "Schiaparelli Hemisphere Enhanced", "Syrtis Major Hemisphere Enhanced", "Valles Marineris Hemisphere Enhanced"]
     img_url_list = []
     for hemisphere in hemisphere_list:
-        browser.get(url)
-        browser.find_element_by_link_text(f"{hemisphere}").click()
-        html = browser.page_source
+        browser.visit(url)
+        browser.find_by_text(f"{hemisphere}")[0].click()
+        html = browser.html
         soup = BeautifulSoup(html, 'html.parser')
         img_url = soup.find_all("a", text="Sample")[0]['href']
         img_url_list.append(img_url)
