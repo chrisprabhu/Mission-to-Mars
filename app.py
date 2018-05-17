@@ -63,7 +63,14 @@ def scrape():
 
 # In[8]:
 
-    browser = webdriver.Chrome("chromedriver")
+    # driver_path = os.environ.get('GOOGLE_CHROME_SHIM', None)
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.binary_location = driver_path
+    # chrome_options.add_argument('no-sandbox')
+    # chrome_options.add_argument('--headless')
+    # browser = Browser('chrome', executable_path="chromedriver", options=chrome_options, headless=True)
+
+    browser = webdriver.Chrome("/app/.apt/usr/bin/google-chrome")
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.get(url)
     time.sleep(3)
