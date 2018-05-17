@@ -12,8 +12,8 @@ import pymongo
 import pandas as pd
 from selenium import webdriver
 
-# conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
-conn = 'mongodb://localhost:27017'
+conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
+#conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 mars = client.marsDB
 
