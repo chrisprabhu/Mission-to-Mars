@@ -29,6 +29,7 @@
         <h5>{{ news_title }}</h5>
         {{ news_p }}
     <div class="row">
+        <!-- Featured Mars Image -->
         <div class="col-sm-8">
             <h3>Featured Mars Image</h3>
             <img src= {{ featured_image_url }} alt="Featured Mars Image" class="img-thumbnail">
@@ -36,6 +37,7 @@
         <br><br>
         <div class="col-sm-4">
             <br><br>
+            <!-- Weather Table -->
             <div class="databox">
                 <table border="1">
                     <tr><th colspan="2"><center>Current Weather on Mars</center></th></tr>
@@ -48,6 +50,7 @@
                 </table>
             </div>
             <br><br><br>
+            <!-- Facts Table -->
             <div class="databox">
                 <table border="1">
                     <tr>
@@ -84,7 +87,7 @@
                  </div>
         </div>
       </div>
-
+<!-- Hemisphere Images -->
       <div class="container">
             <div class="row">
               <div class="col">Cerberus Hemisphere<br><img src={{ hemisphere_image_urls[0]["img_url"] }} alt="Cerberus Hemisphere" class="img-thumbnail"></div>
