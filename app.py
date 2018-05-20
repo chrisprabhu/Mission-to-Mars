@@ -3,6 +3,7 @@
 
 # In[1]:
 
+# Imports
 import os
 from bs4 import BeautifulSoup
 import requests
@@ -12,7 +13,7 @@ from splinter import Browser
 import pandas as pd
 from selenium import webdriver
 
-# conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
+#conn = 'mongodb://chrisprabhu:password@ds251548.mlab.com:51548/heroku_m4v9jtnm'
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 mars = client.marsDB
@@ -118,6 +119,8 @@ def scrape():
 
 
     mars_weather = soup.find("p", class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
+    mars_weather = mars_weather.split(',')
+
 
 
 # In[15]:
@@ -204,6 +207,7 @@ def scrape():
         "Featured Image URL": featured_image_url,
         "Mars Weather": mars_weather,
         "Mars Data": data,
+        #"Mars Data": str(table),
         "Hemisphere Image Urls": hemisphere_image_urls }
 
 
@@ -257,7 +261,8 @@ def slashroute():
     scraped_data = scrape()
     results_list = viewTable()
     data_table = pd.DataFrame(data=results_list).to_html()
-    mars_data = pd.DataFrame(data=scraped_data["Mars Data"], index=[0])
+    #mars_data = pd.DataFrame(data=scraped_data["Mars Data"], index=[0])
+    mars_data = scraped_data["Mars Data"]
     return render_template("index.html", 
     featured_image_url=scraped_data["Featured Image URL"],
     mars_weather=scraped_data["Mars Weather"],

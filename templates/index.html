@@ -18,7 +18,7 @@
     <h1>Mission to Mars</h1>
     <br>
      
-    <button type="button" class="btn btn-primary btn-lg">Scrape New Data</button>
+    <a href="."><button type="button" class="btn btn-primary btn-lg">Scrape New Data</button></a>
     
 </center>
     </div>
@@ -36,9 +36,52 @@
         <br><br>
         <div class="col-sm-4">
             <br><br>
-            <div class="databox"> <h4>Current Weather On Mars</h4> <br> {{ mars_weather }} </div>
+            <div class="databox">
+                <table border="1">
+                    <tr><th colspan="2"><center>Current Weather on Mars</center></th></tr>
+                    <tr><td>Date:<td>{{ mars_weather[0] }},{{ mars_weather[1] }}</td></tr>
+                    <tr><td>Weather Conditions:<td>{{ mars_weather[2] }}</td></tr>
+                    <tr><td>High Temperature:<td>{{ mars_weather[3] }}</td></tr>
+                    <tr><td>Low Temperature:<td>{{ mars_weather[4] }}</td></tr>
+                    <tr><td>Atmospheric Pressure:<td>{{ mars_weather[5] }}</td></tr>
+                    <tr><td>Daylight Hours: <td>{{ mars_weather[6] }}</td></tr>
+                </table>
+            </div>
             <br><br><br>
-            <div class="databox"><h4> Mars Facts</h4> <br> {{ data }} </div>
+            <div class="databox">
+                <table border="1">
+                    <tr>
+                        <th colspan="2"><center>Mars Facts</center></td>
+                    </tr>
+                    <tr>
+                        <td>Equatorial Diameter:</td><td>{{ data["Equatorial Diameter:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>First Record:</td><td>{{ data["First Record:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mass:</td><td>{{ data["Mass:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Moons:</td><td>{{ data["Moons:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Orbit Distance:</td><td>{{ data["Orbit Distance:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Orbit Period:</td><td>{{ data["Orbit Period:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Polar Diameter:</td><td>{{ data["Polar Diameter:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Recorded By:</td><td>{{ data["Recorded By:"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Surface Temperature:</td><td>{{ data["Surface Temperature:"] }}</td>
+                    </tr>
+                </table>
+                 </div>
         </div>
       </div>
 
